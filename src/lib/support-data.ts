@@ -21,6 +21,24 @@ export interface Ticket {
   suggestedReply: string;
 }
 
+/** Real responses are separate from demonstration records and may omit AI fields. */
+export interface SubmittedTicket {
+  id: string;
+  databaseId: string | null;
+  ticketNumber: string | null;
+  customer: string;
+  email: string;
+  subject: string;
+  description: string;
+  category: string | null;
+  priority: string | null;
+  status: string | null;
+  receivedAt: string | null;
+  summary: string | null;
+  department: string | null;
+  suggestedReply: string | null;
+}
+
 export const categoryDepartments: Record<Category, string> = {
   "Acesso à conta": "Suporte ao cliente",
   Pagamentos: "Financeiro",
