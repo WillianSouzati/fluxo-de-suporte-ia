@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep demonstration records and support-domain types in `src/lib/support-data.ts`; pages consume the same data so counts, filters and details stay consistent.
+- Keep the first-stage experience entirely client-side with no persistence, authentication, network submission or AI calls; this isolates the presentation for later service adapters.
+- Put shared navigation in the root shell and keep request listing and details under an Outlet layout; each content page owns its metadata.
+- Define visual roles and reusable page styling in `src/styles.css`, and use existing design-system controls for interactions to preserve visual consistency.

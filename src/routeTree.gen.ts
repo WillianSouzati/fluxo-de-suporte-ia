@@ -10,33 +10,98 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CategoriasRouteImport } from './routes/categorias'
+import { Route as NovoAtendimentoRouteImport } from './routes/novo-atendimento'
+import { Route as SolicitacoesRouteImport } from './routes/solicitacoes'
+import { Route as SolicitacoesIndexRouteImport } from './routes/solicitacoes.index'
+import { Route as SolicitacoesIdRouteImport } from './routes/solicitacoes.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoriasRoute = CategoriasRouteImport.update({
+  id: '/categorias',
+  path: '/categorias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NovoAtendimentoRoute = NovoAtendimentoRouteImport.update({
+  id: '/novo-atendimento',
+  path: '/novo-atendimento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolicitacoesRoute = SolicitacoesRouteImport.update({
+  id: '/solicitacoes',
+  path: '/solicitacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolicitacoesIndexRoute = SolicitacoesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SolicitacoesRoute,
+} as any)
+const SolicitacoesIdRoute = SolicitacoesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => SolicitacoesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/categorias': typeof CategoriasRoute
+  '/novo-atendimento': typeof NovoAtendimentoRoute
+  '/solicitacoes': typeof SolicitacoesRouteWithChildren
+  '/solicitacoes/$id': typeof SolicitacoesIdRoute
+  '/solicitacoes/': typeof SolicitacoesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/categorias': typeof CategoriasRoute
+  '/novo-atendimento': typeof NovoAtendimentoRoute
+  '/solicitacoes/$id': typeof SolicitacoesIdRoute
+  '/solicitacoes': typeof SolicitacoesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/categorias': typeof CategoriasRoute
+  '/novo-atendimento': typeof NovoAtendimentoRoute
+  '/solicitacoes': typeof SolicitacoesRouteWithChildren
+  '/solicitacoes/$id': typeof SolicitacoesIdRoute
+  '/solicitacoes/': typeof SolicitacoesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/categorias'
+    | '/novo-atendimento'
+    | '/solicitacoes'
+    | '/solicitacoes/$id'
+    | '/solicitacoes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/categorias'
+    | '/novo-atendimento'
+    | '/solicitacoes/$id'
+    | '/solicitacoes'
+  id:
+    | '__root__'
+    | '/'
+    | '/categorias'
+    | '/novo-atendimento'
+    | '/solicitacoes'
+    | '/solicitacoes/$id'
+    | '/solicitacoes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CategoriasRoute: typeof CategoriasRoute
+  NovoAtendimentoRoute: typeof NovoAtendimentoRoute
+  SolicitacoesRoute: typeof SolicitacoesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +113,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categorias': {
+      id: '/categorias'
+      path: '/categorias'
+      fullPath: '/categorias'
+      preLoaderRoute: typeof CategoriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/novo-atendimento': {
+      id: '/novo-atendimento'
+      path: '/novo-atendimento'
+      fullPath: '/novo-atendimento'
+      preLoaderRoute: typeof NovoAtendimentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solicitacoes': {
+      id: '/solicitacoes'
+      path: '/solicitacoes'
+      fullPath: '/solicitacoes'
+      preLoaderRoute: typeof SolicitacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solicitacoes/': {
+      id: '/solicitacoes/'
+      path: '/'
+      fullPath: '/solicitacoes/'
+      preLoaderRoute: typeof SolicitacoesIndexRouteImport
+      parentRoute: typeof SolicitacoesRoute
+    }
+    '/solicitacoes/$id': {
+      id: '/solicitacoes/$id'
+      path: '/$id'
+      fullPath: '/solicitacoes/$id'
+      preLoaderRoute: typeof SolicitacoesIdRouteImport
+      parentRoute: typeof SolicitacoesRoute
+    }
   }
 }
 
+interface SolicitacoesRouteChildren {
+  SolicitacoesIdRoute: typeof SolicitacoesIdRoute
+  SolicitacoesIndexRoute: typeof SolicitacoesIndexRoute
+}
+
+const SolicitacoesRouteChildren: SolicitacoesRouteChildren = {
+  SolicitacoesIdRoute: SolicitacoesIdRoute,
+  SolicitacoesIndexRoute: SolicitacoesIndexRoute,
+}
+
+const SolicitacoesRouteWithChildren = SolicitacoesRoute._addFileChildren(
+  SolicitacoesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CategoriasRoute: CategoriasRoute,
+  NovoAtendimentoRoute: NovoAtendimentoRoute,
+  SolicitacoesRoute: SolicitacoesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

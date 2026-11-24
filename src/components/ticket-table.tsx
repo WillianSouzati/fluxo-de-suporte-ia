@@ -1,0 +1,18 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, ChevronLeft, ChevronRight, Inbox, SearchX } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { IconButton, PriorityBadge, StatusBadge } from "@/components/support-ui";
+import { formatTicketDate, initials, type Ticket } from "@/lib/support-data";
+
+export function TicketTable({ tickets, compact = false, resetFilters }: { tickets: Ticket[]; compact?: boolean; resetFilters?: () => void }) {
+  const [page, setPage] = useState(0);
+  const pageSize = compact ? 6 : 10;
+  const pageCount = Math.ceil(tickets.length / pageSize);
+  const safePage = Math.min(page, Math.max(0, pageCount - 1));
+  const shown = tickets.slice(safePage * pageSize, (safePage + 1) * pageSize);
+
+  if (!tickets.length) return <div className="empty-state"><span className="empty-icon"><SearchX size={23} /></span><h3 className="text-sm font-semibold">Nenhuma solicitação encontrada</h3><p className="max-w-xs text-xs leading-relaxed text-muted-foreground">Não há dados de demonstração que correspondam aos filtros selecionados.</p>{resetFilters && <Button variant="outline" size="sm" onClick={resetFilters}>Limpar filtros</Button>}</div>;
+
+  return <><div className="table-scroller"><table className="ticket-table"><thead><tr><th>Nº do atendimento</th><th>Cliente / Assunto</th><th>Categoria</th><th>Prioridade</th><th>Status</th><th>Recebido em</th><th><span className="sr-only">Visualizar atendimento</span></th></tr></thead><tbody>{shown.map((ticket, index) => <tr key={ticket.id}><td><Link to="/solicitacoes/$id" params={{ id: ticket.id }} className="ticket-id hover:text-primary">#{ticket.id}</Link></td><td><Link to="/solicitacoes/$id" params={{ id: ticket.id }} className="ticket-person"><span className={`avatar avatar-tone-${index % 5}`}>{initials(ticket.customer)}</span><span><span className="ticket-customer">{ticket.customer}</span><span className="ticket-subject">{ticket.subject}</span></span></Link></td><td className="text-muted-foreground">{ticket.category}</td><td><PriorityBadge priority={ticket.priority} /></td><td><StatusBadge status={ticket.status} /></td><td className="text-muted-foreground">{formatTicketDate(ticket.receivedAt)}<span className="ml-1.5 text-[9px]">{ticket.receivedAt.slice(11,16)}</span></td><td><Button variant="ghost" size="icon" asChild className="size-6 text-muted-foreground"><Link to="/solicitacoes/$id" params={{ id: ticket.id }} aria-label={`Ver atendimento ${ticket.id}`} title={`Ver atendimento ${ticket.id}`}><ChevronRight size={14} /></Link></Button></td></tr>)}</tbody></table></div><div className="table-footer"><span>Mostrando {safePage * pageSize + 1}–{Math.min((safePage + 1) * pageSize, tickets.length)} de {tickets.length} solicitações</span>{compact ? <span className="hidden items-center gap-1.5 min-[450px]:flex"><span className="size-1 rounded-full bg-success" />Dados de exemplo</span> : <div className="flex items-center gap-2"><Button variant="outline" size="icon" className="size-7" aria-label="Página anterior" onClick={() => setPage(safePage - 1)} disabled={safePage === 0}><ChevronLeft size={13} /></Button><span className="text-[10px]">{safePage + 1} / {pageCount}</span><Button variant="outline" size="icon" className="size-7" aria-label="Próxima página" onClick={() => setPage(safePage + 1)} disabled={safePage + 1 >= pageCount}><ChevronRight size={13} /></Button></div>}</div></>;
+}
