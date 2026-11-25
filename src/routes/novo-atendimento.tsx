@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DemoNote, PageHeading } from "@/components/support-ui";
-import { processSupportTicket, processingErrorMessage } from "@/lib/support-service";
+import { processSupportTicket, processingErrorMessage, analysisErrorMessage } from "@/lib/support-service";
 import { rememberSubmittedTicket } from "@/lib/submitted-tickets";
 import type { SubmittedTicket } from "@/lib/support-data";
 
@@ -41,7 +41,7 @@ function NewRequest() {
       setResult(response.ticket);
       await navigate({ to: "/solicitacoes/$id", params: { id: response.ticket.id } });
     } catch (failure) {
-      setError(failure instanceof Error ? failure.message : processingErrorMessage);
+      setError(failure instanceof Error && failure.message === analysisErrorMessage ? analysisErrorMessage : processingErrorMessage);
     } finally {
       submitting.current = false;
       setIsSubmitting(false);

@@ -31,7 +31,6 @@ use the editor.
 
 ## Application architecture
 - Keep demonstration records and support-domain types in `src/lib/support-data.ts`; pages consume the same data so counts, filters and details stay consistent.
-- Keep the first-stage experience entirely client-side with no persistence, authentication, network submission or AI calls; this isolates the presentation for later service adapters.
 - Keep dashboard, listings, categories and notifications on shared demonstration data; real submissions must never enter these public surfaces.
 - Submit real tickets through the existing Supabase client and `process-support-ticket` Edge Function with an authenticated or anonymous session; never duplicate its storage or AI logic in the browser.
 - Keep submitted results in tab-scoped session storage, keyed by session user and a `real-` route ID; render only the submitting session's response in the existing details page, without public database reads.
