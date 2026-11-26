@@ -65,6 +65,42 @@ export type Database = {
         }
         Relationships: []
       }
+      trustcheck_analyses: {
+        Row: {
+          classification: string
+          created_at: string
+          id: string
+          indicators: Json
+          listing_category: string
+          listing_description: string
+          listing_price: number
+          listing_title: string
+          recommendation: string
+        }
+        Insert: {
+          classification: string
+          created_at?: string
+          id?: string
+          indicators?: Json
+          listing_category: string
+          listing_description: string
+          listing_price: number
+          listing_title: string
+          recommendation: string
+        }
+        Update: {
+          classification?: string
+          created_at?: string
+          id?: string
+          indicators?: Json
+          listing_category?: string
+          listing_description?: string
+          listing_price?: number
+          listing_title?: string
+          recommendation?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
