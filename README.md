@@ -2,7 +2,7 @@
 
 Sistema de atendimento ao cliente com inteligência artificial para automatizar a análise, classificação e organização de solicitações de suporte.
 
-**Aplicação:** https://kindred-request-compass.lovable.app/
+**Aplicação:** https://fluxo-de-suporte-ia.lovable.app
 
 ## Sobre o projeto
 
@@ -87,6 +87,6 @@ Por se tratar de um projeto demonstrativo, algumas funcionalidades podem ser evo
 
 ## Autor
 
-**Willian Souza**
+**Willian Scher**
 
 Projeto desenvolvido com foco na aplicação prática de inteligência artificial em processos de negócio, automação de atendimento e experiência do cliente.
